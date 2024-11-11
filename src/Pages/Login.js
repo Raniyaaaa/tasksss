@@ -2,6 +2,7 @@ import { useRef, useState } from "react"
 import { Button, FloatingLabel, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import MainNavigation from "../MainNavigation/MainNavigation";
 
 const Login=()=>{
     const [isLogin,setIsLogin]=useState(false)
@@ -71,6 +72,7 @@ const Login=()=>{
             if (confirmPasswordInputRef.current) {
                 confirmPasswordInputRef.current.value = '';
             }
+            localStorage.setItem("token",data.idToken)
             navigate("/home")
         })
         .catch((err)=>{
@@ -84,6 +86,7 @@ const Login=()=>{
 
     return(
         <>
+        <MainNavigation/>
         <div style={{ paddingTop: '2rem',paddingLeft:'20rem',paddingBottom:'5rem', display: 'flex', alignItems: 'center' ,flexDirection: 'column'}}>
             <section style={{
                 border:'1px solid #ccc',
