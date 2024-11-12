@@ -12,7 +12,7 @@ const Profile = () => {
     useEffect(()=>{
       const idToken=localStorage.getItem('token');
       if(idToken){
-        fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=REPLACEMENT',{
+        fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyC465zamb1d08zID26EyUI0YPtMg_TO9qw',{
           method:'POST',
           headers:{ 'Content-Type': 'application/json'},
           body:JSON.stringify({idToken})
@@ -35,7 +35,7 @@ const Profile = () => {
     const profileSubmitHandler=(event)=>{
         event.preventDefault();
 
-        const url='https://identitytoolkit.googleapis.com/v1/accounts:update?key=REPLACEMENT'
+        const url='https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyC465zamb1d08zID26EyUI0YPtMg_TO9qw'
 
         fetch(url, {
             method: 'POST',

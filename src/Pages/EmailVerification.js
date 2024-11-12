@@ -16,7 +16,7 @@ const EmailVerification = () => {
     }, [navigate]);
 
     const checkEmailVerification = (token) => {
-        const url = 'https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=REPLACEMENT';
+        const url = 'https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyC465zamb1d08zID26EyUI0YPtMg_TO9qw';
         
         fetch(url, {
             method: 'POST',
@@ -43,7 +43,7 @@ const EmailVerification = () => {
 
     const resendVerificationEmail = () => {
         const token = localStorage.getItem('token');
-        const url = 'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=REPLACEMENT';
+        const url = 'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyC465zamb1d08zID26EyUI0YPtMg_TO9qw';
 
         fetch(url, {
             method: 'POST',

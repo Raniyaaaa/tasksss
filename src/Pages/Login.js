@@ -3,7 +3,7 @@ import { Button, FloatingLabel, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import MainNavigation from "../MainNavigation/MainNavigation";
-import { getAuth } from "firebase/auth";
+
 
 const Login=()=>{
     const [isLogin,setIsLogin]=useState(false)
@@ -37,9 +37,9 @@ const Login=()=>{
 
         let url;
         if(isLogin){
-            url='https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=REPLACEMENT'
+            url='https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyC465zamb1d08zID26EyUI0YPtMg_TO9qw'
         }else{
-            url="https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=REPLACEMENT"
+            url="https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyC465zamb1d08zID26EyUI0YPtMg_TO9qw"
         }
 
         fetch(url,{
@@ -167,7 +167,7 @@ const Login=()=>{
                         </Button>
                     </div>
                     {isLogin &&<div className="mt-1">
-                        <Link>forgot password?</Link>
+                        <Link to="/forgetpassword">forgot password?</Link>
                     </div>}
                 </form>
             </section>

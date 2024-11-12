@@ -5,6 +5,7 @@ import AboutUs from "./Pages/AboutUs";
 import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
 import VerifyEmailPage from "./Pages/EmailVerification";
+import ForgetPasswordPage from "./Pages/ForgetPasswordPage";
 
 function App() {
 return(
@@ -16,6 +17,7 @@ return(
       <Route path='/home' element={<Home/>}/>
       <Route path='/profile' element={<Profile/>}></Route>
       <Route path='/verifyEmail' element={<VerifyEmailPage/>}/>
+      <Route path='/forgetpassword' element={<ForgetPasswordPage/>}></Route>
     </Routes>
   </Router>
 )
