@@ -1,7 +1,8 @@
-import { Navbar, Alert } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Navbar, Alert,Button } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 
 const Home = () => {
+  
   return (
     <>
       <Navbar style={{ border: '1px solid black', display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '4rem', padding: '0 1rem' }}>

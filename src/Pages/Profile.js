@@ -23,7 +23,9 @@ const Profile = () => {
           if (data.users && data.users.length > 0) {
             setFullName(data.users[0].displayName || '');
             setPhotoURL(data.users[0].photoUrl || '');
-            setPercentage('100')
+            if(data.users[0].displayName && data.users[0].photoUrl){
+              setPercentage('100')
+            }  
           }
         })
         .catch(error => console.log('Error fetching data',error))

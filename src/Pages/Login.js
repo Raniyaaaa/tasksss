@@ -3,6 +3,7 @@ import { Button, FloatingLabel, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import MainNavigation from "../MainNavigation/MainNavigation";
+import { getAuth } from "firebase/auth";
 
 const Login=()=>{
     const [isLogin,setIsLogin]=useState(false)
@@ -67,13 +68,14 @@ const Login=()=>{
         })
         .then((data)=>{
             console.log("User has successfully signed up")
+            console.log(data.emailVerified);
             emailInputRef.current.value = '';
             passwordInputRef.current.value = '';
             if (confirmPasswordInputRef.current) {
                 confirmPasswordInputRef.current.value = '';
             }
             localStorage.setItem("token",data.idToken)
-            navigate("/home")
+            navigate('/verifyEmail')
         })
         .catch((err)=>{
             alert(err)

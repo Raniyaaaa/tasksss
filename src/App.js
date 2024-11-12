@@ -4,6 +4,7 @@ import Products from "./Pages/Products";
 import AboutUs from "./Pages/AboutUs";
 import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
+import VerifyEmailPage from "./Pages/EmailVerification";
 
 function App() {
 return(
@@ -14,6 +15,7 @@ return(
       <Route path='/aboutus' element={<AboutUs/>}/>
       <Route path='/home' element={<Home/>}/>
       <Route path='/profile' element={<Profile/>}></Route>
+      <Route path='/verifyEmail' element={<VerifyEmailPage/>}/>
     </Routes>
   </Router>
 )
