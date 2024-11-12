@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import MainNavigation from "../MainNavigation/MainNavigation";
 
-
 const Login=()=>{
     const [isLogin,setIsLogin]=useState(false)
     const emailInputRef=useRef();
@@ -168,6 +167,8 @@ const Login=()=>{
                     </div>
                     {isLogin &&<div className="mt-1">
                         <Link to="/forgetpassword">forgot password?</Link>
+                        <Link>forgot password?</Link>
+
                     </div>}
                 </form>
             </section>

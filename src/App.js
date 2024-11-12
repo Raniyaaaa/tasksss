@@ -17,7 +17,6 @@ return(
       <Route path='/home' element={<Home/>}/>
       <Route path='/profile' element={<Profile/>}></Route>
       <Route path='/verifyEmail' element={<VerifyEmailPage/>}/>
-      <Route path='/forgetpassword' element={<ForgetPasswordPage/>}></Route>
     </Routes>
   </Router>
 )
