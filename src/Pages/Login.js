@@ -1,16 +1,22 @@
-import { useRef, useState } from "react"
+import { useContext, useRef, useState, useEffect } from "react"
 import { Button, FloatingLabel, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import MainNavigation from "../MainNavigation/MainNavigation";
+import MainContext from "../Store/MainContext";
 
 const Login=()=>{
-    const [isLogin,setIsLogin]=useState(false)
+    const mainContext=useContext(MainContext)
+    const [isLogin,setIsLogin]=useState(true)
     const emailInputRef=useRef();
     const passwordInputRef=useRef();
     const confirmPasswordInputRef=useRef();
     const navigate=useNavigate();
     
+    // useEffect(() => {
+    //     console.log("Token:", mainContext.token);
+    //     console.log("User logged in:", mainContext.isLoggedIn);
+    // }, [mainContext.token, mainContext.isLoggedIn]);
 
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false)
@@ -66,15 +72,10 @@ const Login=()=>{
             }
         })
         .then((data)=>{
-            console.log("User has successfully signed up")
-            console.log(data.emailVerified);
-            emailInputRef.current.value = '';
-            passwordInputRef.current.value = '';
-            if (confirmPasswordInputRef.current) {
-                confirmPasswordInputRef.current.value = '';
-            }
-            localStorage.setItem("token",data.idToken)
-            navigate('/verifyEmail')
+            console.log(data)
+            mainContext.login(data.idToken);
+            console.log("User logged in:", mainContext.isLoggedIn);
+            navigate('/verifyEmail');
         })
         .catch((err)=>{
             alert(err)
@@ -167,8 +168,6 @@ const Login=()=>{
                     </div>
                     {isLogin &&<div className="mt-1">
                         <Link to="/forgetpassword">forgot password?</Link>
-                        <Link>forgot password?</Link>
-
                     </div>}
                 </form>
             </section>

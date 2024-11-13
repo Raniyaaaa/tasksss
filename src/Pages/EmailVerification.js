@@ -31,7 +31,7 @@ const EmailVerification = () => {
         .then((data) => {
             if (data && data.users && data.users[0].emailVerified) {
                 setIsVerified(true);
-                navigate('/home');  // Redirect to home page if email is verified
+                navigate('/home');
             } else {
                 setIsVerified(false);
             }
