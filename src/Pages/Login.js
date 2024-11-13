@@ -1,4 +1,4 @@
-import { useContext, useRef, useState, useEffect } from "react"
+import { useContext, useRef, useState } from "react"
 import { Button, FloatingLabel, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -12,11 +12,6 @@ const Login=()=>{
     const passwordInputRef=useRef();
     const confirmPasswordInputRef=useRef();
     const navigate=useNavigate();
-    
-    // useEffect(() => {
-    //     console.log("Token:", mainContext.token);
-    //     console.log("User logged in:", mainContext.isLoggedIn);
-    // }, [mainContext.token, mainContext.isLoggedIn]);
 
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false)
@@ -73,7 +68,8 @@ const Login=()=>{
         })
         .then((data)=>{
             console.log(data)
-            mainContext.login(data.idToken);
+            mainContext.login(data.idToken,data.email);
+            mainContext.settingUserId(data.email)
             console.log("User logged in:", mainContext.isLoggedIn);
             navigate('/verifyEmail');
         })

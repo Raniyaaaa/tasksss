@@ -1,7 +1,7 @@
 import { Navbar, Alert,Button } from "react-bootstrap";
 import { FaGithub, FaGlobe } from "react-icons/fa";
 import { Link,useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 const Profile = () => {
     const navigate = useNavigate();

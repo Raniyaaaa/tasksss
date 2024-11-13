@@ -1,10 +1,12 @@
-import React from "react"
+import React from "react";
 
-const MainContext=React.createContext({
-    token:'',
-    isLoggedIn:false,
-    login:(token)=>{},
-    logout:()=>{}
-})
+const MainContext = React.createContext({
+  token: '',
+  userId: '',
+  isLoggedIn: false,
+  login: (token, userId) => {},
+  logout: () => {},
+  settingUserId:()=>{}
+});
 
 export default MainContext;
