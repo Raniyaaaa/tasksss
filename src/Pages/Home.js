@@ -9,9 +9,11 @@ const Home = () => {
   const mainContext = useContext(MainContext);
   const navigate = useNavigate();
   const [formVisibility, setFormVisibility] = useState(false);
-  const amountInputRef = useRef();
-  const descriptionInputRef = useRef();
+  const amountInputRef = useRef(null);
+  const descriptionInputRef = useRef(null);
+  const categoryInputRef = useRef(null);
   const [expenses, setExpenses] = useState([]);
+  const [editingExpense,setEditingExpense]=useState(null);
 
   const logoutHandler = () => {
     mainContext.logout();
@@ -20,6 +22,8 @@ const Home = () => {
 
   const toggleFormVisibility = () => {
     setFormVisibility((prevState) => !prevState);
+    setEditingExpense(null)
+
   };
   const cleanedEmail = mainContext.userId ? mainContext.userId.replace(/[@.]/g, '') : '';
   useEffect(() => {
@@ -29,7 +33,7 @@ const Home = () => {
   }, [mainContext.userId]);
 
 
-  const fetchExpenses = async (userId) => {
+  const fetchExpenses = async () => {
     const firebaseUrl = `https://tasksss-b2cac-default-rtdb.firebaseio.com/expenses/${cleanedEmail}.json`;
 
     try {
@@ -49,12 +53,11 @@ const Home = () => {
     }
   };
 
-
   const submitHandler = async (event) => {
     event.preventDefault();
     const enteredAmount = amountInputRef.current.value;
     const enteredDescription = descriptionInputRef.current.value;
-    const selectedCategory = event.target.category.value;
+    const selectedCategory = categoryInputRef.current.value;
   
     const newExpense = {
       Amount: enteredAmount,
@@ -62,23 +65,75 @@ const Home = () => {
       Category: selectedCategory,
     };
   
-    const firebaseUrl = `https://tasksss-b2cac-default-rtdb.firebaseio.com/expenses/${cleanedEmail}.json`;
+    const firebaseUrl = `https://tasksss-b2cac-default-rtdb.firebaseio.com/expenses/${cleanedEmail}`;
   
     try {
-      const response = await axios.post(firebaseUrl, newExpense);
-      console.log("Expense added:", response.data);
-
-      setExpenses((prev) => [
-        ...prev,
-        { id: Math.random(), ...newExpense },
-      ]);
-  
+      if (editingExpense) {
+        console.log(editingExpense)
+        console.log(editingExpense.id);
+        await axios.put(`${firebaseUrl}/${editingExpense.id}.json`, newExpense);
+        setExpenses((prev) =>
+          prev.map((expense) =>
+            expense.id === editingExpense.id ? { id: expense.id, ...newExpense } : expense
+          )
+        );
+        alert('Expense successfully updated!');
+      } else {
+        const response = await axios.post(`${firebaseUrl}.json`, newExpense);
+        console.log('Expense added:', response.data);
+        setExpenses((prev) => [
+          ...prev,
+          { id: response.data.name, ...newExpense },
+        ]);
+        alert('Expense added successfully!');
+      }
+      setEditingExpense(null);
       toggleFormVisibility();
     } catch (error) {
-      console.error("Error adding expense:", error.response ? error.response.data : error.message);
+      console.error('Error adding expense:', error.response ? error.response.data : error.message);
+      alert('Error occurred while adding the expense.');
     }
   };
   
+
+  const deleteExpenseHandler=async(id)=>{
+    
+    const firebaseUrl = `https://tasksss-b2cac-default-rtdb.firebaseio.com/expenses/${cleanedEmail}/${id}.json`;
+
+    try {
+      await axios.delete(firebaseUrl);
+      setExpenses((prev) => prev.filter((expense) => expense.id !== id));
+      console.log("Expense successfuly deleted :", id);
+    } catch (error) {
+      console.error("Error deleting expense:", error);
+    }
+  }
+  
+  const editExpenseHandler = (expense) => {
+    setEditingExpense(expense);
+    setFormVisibility(true);
+    if (amountInputRef.current) {
+      amountInputRef.current.value = expense.Amount;
+    }
+  
+    if (descriptionInputRef.current) {
+      descriptionInputRef.current.value = expense.Description;
+    }
+  
+    if (categoryInputRef.current) {
+      categoryInputRef.current.value = expense.Category; // Set category using ref
+    }
+    
+  };
+
+  useEffect(() => {
+    if (!formVisibility) {
+      if (amountInputRef.current) amountInputRef.current.value = '';
+      if (descriptionInputRef.current) descriptionInputRef.current.value = '';
+      if (categoryInputRef.current) categoryInputRef.current.value = '';
+    }
+  }, [formVisibility]);
+
   return (
     <>
       <Navbar style={{ border: '1px solid black', display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '4rem', padding: '0 1rem' }}>
@@ -123,14 +178,14 @@ const Home = () => {
               </FloatingLabel>
             </div>
             <div className="mt-4">
-              <FloatingLabel label="Category" controlId="category">
-                <select className="form-select" name="category" required defaultValue="">
-                  <option value="" disabled hidden>Select Category</option>
-                  <option>Food</option>
-                  <option>Petrol</option>
-                  <option>Salary</option>
-                </select>
-              </FloatingLabel>
+            <FloatingLabel label="Category" controlId="category">
+              <select ref={categoryInputRef} required defaultValue="">
+                <option value="" disabled hidden>Select Category</option>
+                <option>Food</option>
+                <option>Petrol</option>
+                <option>Salary</option>
+              </select>
+            </FloatingLabel>
             </div>
             <div className="mt-4" style={{ display: 'flex', justifyContent: 'center' }}>
               <Button variant="danger" type="submit" className="mt-3" style={{ marginRight: '4rem' }}>
@@ -146,7 +201,7 @@ const Home = () => {
       <div style={{ paddingRight: '6rem', paddingLeft: '6rem' }}>
         <section>
           {expenses.length > 0 && <h2>Expenses...</h2>}
-          <ExpenseList expenses={expenses} />
+          <ExpenseList expenses={expenses} setExpenses={setExpenses} onDeleteExpense={deleteExpenseHandler} onEditExpense={editExpenseHandler}/>
         </section>
       </div>
     </>

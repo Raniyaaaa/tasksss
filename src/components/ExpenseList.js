@@ -1,11 +1,28 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Button,Col,Row } from "react-bootstrap";
+
 
 const ExpenseList = (props) => {
+
+  const editHandler=(expense)=>{
+
+    props.onEditExpense(expense);
+
+  }
+
+  const deleteHandler=(id)=>{
+
+    props.onDeleteExpense(id)
+
+  }
+  
   return (
-    <div>
+    <div style={{padding:'2rem'}}>
       <ul>
+        {console.log(props.expenses)}
         {props.expenses.map((expense) => (
           <li key={expense.id} style={{
+            textDecoration:'none',
             margin: '10px 0',
             padding: '15px',
             border: '1px solid #ccc',
@@ -13,9 +30,23 @@ const ExpenseList = (props) => {
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
             backgroundColor: '#f9f9f9'
           }}>
+            <Row>
+            <Col>
             <div><strong>Amount:</strong> { expense.Amount}</div>
             <div><strong>Description:</strong> { expense.Description}</div>
             <div><strong>Category:</strong> { expense.Category}</div>
+            </Col>
+            <Col>
+            <div className="mt-4" style={{ display: 'flex', justifyContent: 'center' }}>
+              <Button variant="outline-danger" type="button" className="mt-3" style={{ marginRight: '1rem' }} onClick={()=>editHandler(expense)}>
+                Edit
+              </Button>
+              <Button variant="danger" type="button" className="mt-3" onClick={()=>deleteHandler(expense.id)}>
+                Delete
+              </Button>
+            </div>
+            </Col>
+            </Row>
           </li>
         ))}
       </ul>
