@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Button,Col,Row } from "react-bootstrap";
-
+import { useDispatch } from "react-redux";
 
 const ExpenseList = (props) => {
+const dispatch=useDispatch();
 
   const editHandler=(expense)=>{
 
@@ -12,7 +13,7 @@ const ExpenseList = (props) => {
 
   const deleteHandler=(id)=>{
 
-    props.onDeleteExpense(id)
+    props.onDeleteExpense(id);
 
   }
   

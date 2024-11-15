@@ -1,6 +1,4 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { useContext } from "react";
-import MainContext from "./Store/MainContext";
 import Login from "./Pages/Login";
 import Products from "./Pages/Products";
 import AboutUs from "./Pages/AboutUs";
