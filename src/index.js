@@ -9,11 +9,12 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './Store/AuthSlice'; 
 import expenseReducer from "./Store/ExpenceSlice"; 
-
+import themeReducer from './Store/ThemeSlice';
 const store = configureStore({
     reducer: {
         auth: authReducer,
         expense: expenseReducer,
+        theme: themeReducer,
     },
 });
 

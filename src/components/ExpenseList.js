@@ -1,9 +1,10 @@
 import React from "react";
 import { Button,Col,Row } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const ExpenseList = (props) => {
 const dispatch=useDispatch();
+const darkMode =useSelector(state=> state.theme.darkMode)
 
   const editHandler=(expense)=>{
 
@@ -29,7 +30,8 @@ const dispatch=useDispatch();
             border: '1px solid #ccc',
             borderRadius: '5px',
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-            backgroundColor: '#f9f9f9'
+            backgroundColor: darkMode ? '#333' : 'white',
+            color: darkMode ? 'white' : 'black',
           }}>
             <Row>
             <Col>
