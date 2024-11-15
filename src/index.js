@@ -5,13 +5,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import "../node_modules/react-bootstrap/dist/react-bootstrap"
 import "../node_modules/bootstrap/dist/css/bootstrap.css"
-import MainProvider from './Store/MainProvider';
+import { Provider } from 'react-redux';
+import store from "./Store/AuthSlice"
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <MainProvider>
+    <Provider store={store}>
       <App />
-    </MainProvider>
+    </Provider>
   </React.StrictMode>
 );
 

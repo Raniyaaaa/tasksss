@@ -8,19 +8,21 @@ import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
 import VerifyEmailPage from "./Pages/EmailVerification";
 import ForgetPasswordPage from "./Pages/ForgetPasswordPage";
+import { useSelector } from "react-redux";
 
 function App() {
-  const mainContext = useContext(MainContext);
+
+  const isLoggedIn=useSelector(state=>state.auth.isLoggedIn)
 
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/products" element={mainContext.isLoggedIn ? <Products /> : <Navigate to="/" />} />
-        <Route path="/aboutus" element={mainContext.isLoggedIn ? <AboutUs /> : <Navigate to="/" />} />
-        <Route path="/home" element={mainContext.isLoggedIn ? <Home /> : <Navigate to="/" />} />
-        <Route path="/profile" element={mainContext.isLoggedIn ? <Profile /> : <Navigate to="/" />} />
-        <Route path="/verifyEmail" element={mainContext.isLoggedIn ? <VerifyEmailPage /> : <Navigate to="/" />} />
+        <Route path="/products" element={isLoggedIn ? <Products /> : <Navigate to="/" />} />
+        <Route path="/aboutus" element={isLoggedIn ? <AboutUs /> : <Navigate to="/" />} />
+        <Route path="/home" element={isLoggedIn ? <Home /> : <Navigate to="/" />} />
+        <Route path="/profile" element={isLoggedIn ? <Profile /> : <Navigate to="/" />} />
+        <Route path="/verifyEmail" element={isLoggedIn ? <VerifyEmailPage /> : <Navigate to="/" />} />
         <Route path="/forgetpassword" element={<ForgetPasswordPage />} />
       </Routes>
     </Router>

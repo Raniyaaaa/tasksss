@@ -3,11 +3,15 @@ import { Button, FloatingLabel, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import MainNavigation from "../MainNavigation/MainNavigation";
-import MainContext from "../Store/MainContext";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../Store/AuthSlice";
 
 const Login=()=>{
-    const mainContext=useContext(MainContext)
+
+    const dispatch=useDispatch();
+    const isLoggedIn=useSelector(state=> state.auth.isLoggedIn)
     const [isLogin,setIsLogin]=useState(true)
+
     const emailInputRef=useRef();
     const passwordInputRef=useRef();
     const confirmPasswordInputRef=useRef();
@@ -68,9 +72,11 @@ const Login=()=>{
         })
         .then((data)=>{
             console.log(data)
-            mainContext.login(data.idToken,data.email);
-            mainContext.settingUserId(data.email)
-            console.log("User logged in:", mainContext.isLoggedIn);
+            dispatch(authActions.login({ 
+                token: data.idToken, 
+                userId: enteredEmail 
+            }));
+            console.log("User logged in:", isLoggedIn);
             navigate('/verifyEmail');
         })
         .catch((err)=>{
