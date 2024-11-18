@@ -11,8 +11,6 @@ import authReducer from './Store/AuthSlice'
 import expenseReducer from './Store/ExpenceSlice';
 import themeReducer from './Store/ThemeSlice';
 
-
-
 const mockStore = configureStore([]);
 const loginStore = mockStore({
   auth: { isLoggedIn: false },
@@ -56,7 +54,29 @@ describe('Login Component Tests', () => {
     );
 
     expect(screen.getByLabelText('Email')).toBeInTheDocument();
+  });
+
+  test('Default Login Mode Render', () => {
+    render(
+      <Provider store={loginStore}>
+        <BrowserRouter>
+          <Login />
+        </BrowserRouter>
+      </Provider>
+    );
+
     expect(screen.getByLabelText('Password')).toBeInTheDocument();
+  });
+
+  test('Default Login Mode Render', () => {
+    render(
+      <Provider store={loginStore}>
+        <BrowserRouter>
+          <Login />
+        </BrowserRouter>
+      </Provider>
+    );
+
     expect(screen.queryByLabelText('Confirm Password')).not.toBeInTheDocument();
   });
 
@@ -73,6 +93,7 @@ describe('Login Component Tests', () => {
     fireEvent.click(screen.getByText("Don't have an Account? Sign Up"));
     expect(screen.getByLabelText('Confirm Password')).toBeInTheDocument();
   });
+
 
   test('Password Visibility Toggle', () => {
     render(
@@ -102,6 +123,42 @@ describe('Login Component Tests', () => {
     expect(headerElement).toBeInTheDocument();
   })
 
+  test('renders "Home" in the header', () => {
+    render(
+      <Provider store={loginStore}>
+        <BrowserRouter>
+          <Login/>
+        </BrowserRouter>
+      </Provider>
+    );
+    const HomeElement =screen.getByText("Home",{exact:true})
+    expect(HomeElement).toBeInTheDocument();
+  })
+
+  test('renders "Products" in the header', () => {
+    render(
+      <Provider store={loginStore}>
+        <BrowserRouter>
+          <Login/>
+        </BrowserRouter>
+      </Provider>
+    );
+    const productElement =screen.getByText("Products",{exact:true})
+    expect(productElement).toBeInTheDocument();
+  })
+
+  test('renders "About Us" in the header', () => {
+    render(
+      <Provider store={loginStore}>
+        <BrowserRouter>
+          <Login/>
+        </BrowserRouter>
+      </Provider>
+    );
+    const aboutusElement =screen.getByText("About Us",{exact:false})
+    expect(aboutusElement).toBeInTheDocument();
+  })
+
   test('Password Mismatch in SignUp Mode', () => {
     render(
       <Provider store={loginStore}>
@@ -121,7 +178,7 @@ fireEvent.click(screen.getByRole('button', { name: /login/i }));
 });
 
 describe('Home Component Tests', () => {
-  test('renders home form correctly', () => {
+  test('renders Welcome to Expense Tracker in home correctly', () => {
     render(
       <Provider store={homeStore}>
         <BrowserRouter>
@@ -131,11 +188,33 @@ describe('Home Component Tests', () => {
     );
 
     expect(screen.getByText('Welcome to Expense Tracker!!!')).toBeInTheDocument();
+  });
+
+  test('renders Your profile is incomplete in home correctly', () => {
+    render(
+      <Provider store={homeStore}>
+        <BrowserRouter>
+          <Home />
+        </BrowserRouter>
+      </Provider>
+    );
+
     expect(screen.getByText('Your profile is incomplete.')).toBeInTheDocument();
+  });
+
+  test('renders Complete now in home correctly', () => {
+    render(
+      <Provider store={homeStore}>
+        <BrowserRouter>
+          <Home />
+        </BrowserRouter>
+      </Provider>
+    );
+
     expect(screen.getByText('Complete now')).toBeInTheDocument();
   });
 
-  test('should toggle form visibility on button click', async () => {
+  test('should toggle form visibility on Add Expense button click', async () => {
     render(
       <Provider store={homeStore}>
         <BrowserRouter>
@@ -145,11 +224,25 @@ describe('Home Component Tests', () => {
     );
 
     const toggleButton = screen.getByText('Add Expenses');
-
     fireEvent.click(toggleButton);
+
     await waitFor(() => {
       expect(screen.getByLabelText('Enter Amount')).toBeInTheDocument();
     });
+
+  });
+
+  test('should toggle form visibility on Close button click', async () => {
+    render(
+      <Provider store={homeStore}>
+        <BrowserRouter>
+          <Home />
+        </BrowserRouter>
+      </Provider>
+    );
+
+    const toggleButton = screen.getByText('Add Expenses');
+    fireEvent.click(toggleButton);
 
     fireEvent.click(screen.getByText('Close'));
     await waitFor(() => {
