@@ -35,13 +35,20 @@ console.log('Is Premium:', isPremium);
     setEditingExpense(null);
     resetForm();
   };
+
+  useEffect(() =>{
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      dispatch(toggleTheme());
+    }
+  },[dispatch])
   
 
   useEffect(() => {
-    if (userId) {
-      Exdispatch(fetchExpenses(email));
-    }
-  }, [userId]);
+  if (userId) {
+    Exdispatch(fetchExpenses(email));
+  }
+}, [userId]);
 
   
   const resetForm = () => {
@@ -161,49 +168,54 @@ console.log('Is Premium:', isPremium);
           {formVisibility && (
             <form onSubmit={submitHandler}>
               <div className="mt-4">
-                <FloatingLabel label="Enter Amount" controlId="amount">
-                  <input
-                    className="form-control"
-                    type="number"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    style={{ height: '35px', fontSize: '14px',backgroundColor: darkMode ? '#333' : 'white',
-                      color: darkMode ? 'white' : 'black', }}
-                    required
-                  />
-                </FloatingLabel>
+              <div className="form-floating">
+              <input
+                id="amount"
+                className="form-control"
+                required=""
+                style={{ height: '35px', fontSize: '14px',backgroundColor: darkMode ? '#333' : 'white',
+                  color: darkMode ? 'white' : 'black',}}
+                type="number"
+                value={amount}
+                onChange={(e)=>{setAmount(e.target.value)}}
+              />
+              <label htmlFor="amount">Enter Amount</label>
+              </div>
               </div>
               <div className="mt-4">
-                <FloatingLabel label="Description" controlId="description">
-                  <input
-                    className="form-control"
-                    type="text"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    style={{ height: '35px', fontSize: '14px',backgroundColor: darkMode ? '#333' : 'white',
-                      color: darkMode ? 'white' : 'black', }}
-                    required
-                  />
-                </FloatingLabel>
+              <div className="form-floating">
+                <input
+                  className="form-control"
+                  id="description"
+                  required=""
+                  style={{ height: '35px', fontSize: '14px', backgroundColor: darkMode ? '#333' : 'white',
+                    color: darkMode ? 'white' : 'black',}}
+                  type="text"
+                  value={description}
+                  onChange={(e)=>{setDescription(e.target.value)}}
+                />
+                <label htmlFor="description">Description</label>
+              </div>
               </div>
               <div className="mt-4">
-                <FloatingLabel label="Category" controlId="category">
+                <div className="form-floating">
                   <select
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    className="form-control"
-                    style={{backgroundColor: darkMode ? '#333' : 'white',
-                      color: darkMode ? 'white' : 'black',}}
-                    required
+                  className="form-control"
+                  id="category"
+                  required
+                  style={{backgroundColor: darkMode ? '#333' : 'white',
+                    color: darkMode ? 'white' : 'black',}}
+                  onChange={(e)=>{setCategory(e.target.value)}}  
                   >
-                    <option value="" disabled hidden>
-                      Select Category
-                    </option>
-                    <option>Food</option>
-                    <option>Petrol</option>
-                    <option>Salary</option>
+                  <option disabled="" hidden="" value={category}>
+                  Select Category
+                  </option>
+                  <option>Food</option>
+                  <option>Petrol</option>
+                  <option>Salary</option>
                   </select>
-                </FloatingLabel>
+                  <label htmlFor="category">Category</label>
+                </div>
               </div>
               <div className="mt-4" style={{ display: 'flex', justifyContent: 'center' }}>
                 <Button
@@ -230,7 +242,7 @@ console.log('Is Premium:', isPremium);
 
       <div style={{ paddingRight: '6rem', paddingLeft: '6rem' }}>
         <section>
-          {Expense.length > 0 && <h2>Expenses...</h2>}
+          <h2>Expenses...</h2>
           <ExpenseList
             expenses={Expense}
             onDeleteExpense={deleteExpenseHandler}

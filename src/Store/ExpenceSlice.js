@@ -3,7 +3,6 @@ import axios from "axios";
 
 
 export const fetchExpenses = createAsyncThunk('expense/fetchExpenses', async (email) => {
-    console.log("Raniya")
     const firebaseUrl = `https://tasksss-b2cac-default-rtdb.firebaseio.com/expenses/${email}.json`;
     try {
         const response = await axios.get(firebaseUrl);
@@ -88,7 +87,6 @@ const expenseSlice = createSlice({
                 state.expense = action.payload;
                 state.totalAmount = calculateTotal(state.expense);
                 state.premium = state.totalAmount >= 10000;
-                console.log(" Total ",state.totalAmount)
             })
             .addCase(editExpense.fulfilled, (state, action) => {
                 state.expense = state.expense.map((expense) =>
@@ -96,19 +94,16 @@ const expenseSlice = createSlice({
                 );
                 state.totalAmount = calculateTotal(state.expense);
                 state.premium = state.totalAmount >= 10000;
-                console.log(" Total ",state.totalAmount)
             })
             .addCase(addExpense.fulfilled, (state, action) => {
                 state.expense.push(action.payload);
                 state.totalAmount = calculateTotal(state.expense);
                 state.premium = state.totalAmount >= 10000;
-                console.log(" Total ",state.totalAmount)
             })
             .addCase(deleteExpense.fulfilled, (state, action) => {
                 state.expense = state.expense.filter((expense) => expense.id !== action.payload);
                 state.totalAmount = calculateTotal(state.expense);
                 state.premium = state.totalAmount >= 10000;
-                console.log(" Total ",state.totalAmount)
             });
     },
 });
