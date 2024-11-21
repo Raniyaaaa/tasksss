@@ -1,28 +1,25 @@
 import React from "react";
 import { Button,Col,Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const ExpenseList = (props) => {
-const dispatch=useDispatch();
+
 const darkMode =useSelector(state=> state.theme.darkMode)
+const Expenses=useSelector(state => state.expense.expense)
 
   const editHandler=(expense)=>{
-
     props.onEditExpense(expense);
-
   }
-
+  
   const deleteHandler=(id)=>{
-
     props.onDeleteExpense(id);
-
   }
   
   return (
     <div style={{padding:'2rem'}}>
-      <ul>
+      <ul style={{listStyleType:'none'}}>
         {console.log(props.expenses)}
-        {props.expenses.map((expense) => (
+        {Expenses.map((expense) => (
           <li key={expense.id} style={{
             textDecoration:'none',
             margin: '10px 0',

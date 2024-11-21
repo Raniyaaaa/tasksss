@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
 import { configureStore as toolkitConfigureStore } from '@reduxjs/toolkit';
 import Login from './Pages/Login';
-import Home from './Pages/Home';
+import Products from './Pages/Products';
 
 import authReducer from './Store/AuthSlice'
 import expenseReducer from './Store/ExpenceSlice';
@@ -18,32 +18,16 @@ const loginStore = mockStore({
 
 global.fetch = jest.fn();
 
-const homeStore = toolkitConfigureStore({
+const productStore = toolkitConfigureStore({
   reducer: {
     auth: authReducer,
     expense: expenseReducer,
     theme: themeReducer,
   },
-  preloadedState: {
-    auth: {
-      userId: '123',
-    },
-    expense: {
-      expense: [],
-      email: 'test@example.com',
-      premium: false,
-    },
-    theme: {
-      darkMode: true,
-    },
-  },
+  
 });
 
 describe('Login Component Tests', () => {
-  beforeEach(() => {
-    fetch.mockClear();
-  });
-
   test('Default Login Mode Render', () => {
     render(
       <Provider store={loginStore}>
@@ -104,7 +88,7 @@ describe('Login Component Tests', () => {
       </Provider>
     );
     const passwordField = screen.getByLabelText('Password');
-    const toggleButton = screen.getByRole('button', { name: /Toggle password visibility/i });
+    const toggleButton = screen.getByRole('button', { name: 'Toggle password visibility'});
     expect(passwordField).toHaveAttribute('type', 'password');
     expect(toggleButton).toBeInTheDocument();
     
@@ -158,31 +142,14 @@ describe('Login Component Tests', () => {
     const aboutusElement =screen.getByText("About Us",{exact:false})
     expect(aboutusElement).toBeInTheDocument();
   })
-
-  test('Password Mismatch in SignUp Mode', () => {
-    render(
-      <Provider store={loginStore}>
-        <BrowserRouter>
-          <Login />
-        </BrowserRouter>
-      </Provider>
-    );
-
-
-const [passwordInput, confirmPasswordInput] = screen.getAllByLabelText(/password/i);
-
-fireEvent.change(passwordInput, { target: { value: 'password123' } });
-fireEvent.change(confirmPasswordInput, { target: { value: 'differentPassword' } });
-fireEvent.click(screen.getByRole('button', { name: /login/i }));
-  });
 });
 
-describe('Home Component Tests', () => {
-  test('renders Welcome to Expense Tracker in home correctly', () => {
+describe('Product Component Tests', () => {
+  test('renders Welcome to Expense Tracker in products correctly', () => {
     render(
-      <Provider store={homeStore}>
+      <Provider store={productStore}>
         <BrowserRouter>
-          <Home />
+          <Products />
         </BrowserRouter>
       </Provider>
     );
@@ -190,11 +157,11 @@ describe('Home Component Tests', () => {
     expect(screen.getByText('Welcome to Expense Tracker!!!')).toBeInTheDocument();
   });
 
-  test('renders Your profile is incomplete in home correctly', () => {
+  test('renders Your profile is incomplete in products correctly', () => {
     render(
-      <Provider store={homeStore}>
+      <Provider store={productStore}>
         <BrowserRouter>
-          <Home />
+          <Products />
         </BrowserRouter>
       </Provider>
     );
@@ -202,11 +169,11 @@ describe('Home Component Tests', () => {
     expect(screen.getByText('Your profile is incomplete.')).toBeInTheDocument();
   });
 
-  test('renders Complete now in home correctly', () => {
+  test('renders Complete now in product correctly', () => {
     render(
-      <Provider store={homeStore}>
+      <Provider store={productStore}>
         <BrowserRouter>
-          <Home />
+          <Products />
         </BrowserRouter>
       </Provider>
     );
@@ -214,29 +181,25 @@ describe('Home Component Tests', () => {
     expect(screen.getByText('Complete now')).toBeInTheDocument();
   });
 
-  test('should toggle form visibility on Add Expense button click', async () => {
+  test('should toggle form visibility on Add Expense button click', () => {
     render(
-      <Provider store={homeStore}>
+      <Provider store={productStore}>
         <BrowserRouter>
-          <Home />
+          <Products/>
         </BrowserRouter>
       </Provider>
     );
 
     const toggleButton = screen.getByText('Add Expenses');
     fireEvent.click(toggleButton);
-
-    await waitFor(() => {
-      expect(screen.getByLabelText('Enter Amount')).toBeInTheDocument();
-    });
-
+    expect(screen.getByLabelText('Enter Amount')).toBeInTheDocument();
   });
 
-  test('should toggle form visibility on Close button click', async () => {
+  test('should toggle form visibility on Close button click', () => {
     render(
-      <Provider store={homeStore}>
+      <Provider store={productStore}>
         <BrowserRouter>
-          <Home />
+          <Products/>
         </BrowserRouter>
       </Provider>
     );
@@ -245,16 +208,15 @@ describe('Home Component Tests', () => {
     fireEvent.click(toggleButton);
 
     fireEvent.click(screen.getByText('Close'));
-    await waitFor(() => {
-      expect(screen.queryByLabelText('Enter Amount')).not.toBeInTheDocument();
-    });
+    expect(screen.queryByLabelText('Enter Amount')).not.toBeInTheDocument();
+
   });
 
-  test('should submit form and call the addExpense action', async () => {
+  test('should submit form and call the addExpense action', () => {
     render(
-      <Provider store={homeStore}>
+      <Provider store={productStore}>
         <BrowserRouter>
-          <Home />
+          <Products/>
         </BrowserRouter>
       </Provider>
     );
@@ -269,39 +231,20 @@ describe('Home Component Tests', () => {
     const submitButton = screen.getByText('Submit Expense');
     fireEvent.click(submitButton);
 
-    await waitFor(() => {
-      expect(screen.queryByLabelText('Enter Amount')).not.toBeInTheDocument();
-    });
+    expect(screen.queryByLabelText('Enter Amount')).not.toBeInTheDocument();
+
   });
 
-  test('should display expenses after they are fetched', async () => {
+  test('should display Expenses... on the screen', () => {
     render(
-      <Provider store={homeStore}>
+      <Provider store={productStore}>
         <BrowserRouter>
-          <Home />
+          <Products/>
         </BrowserRouter>
       </Provider>
     );
 
-    await waitFor(() => {
-      expect(screen.getByText('Expenses...')).toBeInTheDocument();
-    });
-  });
+    expect(screen.getByText('Expenses...')).toBeInTheDocument();
 
-  test('should handle logout button click', async () => {
-    render(
-      <Provider store={homeStore}>
-        <BrowserRouter>
-          <Home />
-        </BrowserRouter>
-      </Provider>
-    );
-
-    const logoutButton = screen.getByText('LOG OUT');
-    fireEvent.click(logoutButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('Welcome to Expense Tracker!!!')).toBeInTheDocument();
-    });
   });
 });

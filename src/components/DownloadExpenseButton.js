@@ -8,9 +8,8 @@ const DownloadExpensesButton = () => {
     const darkMode =useSelector(state => state.theme.darkMode)
     console.log(expenses)
     const downloadCSV = () => {
-        const header = ['ID', 'Amount', 'Description', 'Catagory'];
+        const header = ['Amount', 'Description', 'Catagory'];
         const rows = expenses.map(expense => [
-            expense.id,
             expense.Amount,
             expense.Description,
             expense.Category,
@@ -21,7 +20,7 @@ const DownloadExpensesButton = () => {
             ...rows.map(row => row.join(',')),
         ].join('\n');
 
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const blob = new Blob([csvContent], { type: 'text/csv' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
         link.download = 'expenses.csv';

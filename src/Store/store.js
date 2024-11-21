@@ -1,4 +1,3 @@
-
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './AuthSlice';
 import expenseReducer from "./ExpenceSlice"

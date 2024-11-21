@@ -16,6 +16,7 @@ const authSlice = createSlice({
             state.isLoggedIn = true;
             localStorage.setItem('token', state.token);
             localStorage.setItem('userId', state.userId);
+            localStorage.setItem('theme', 'light');
         },
         logout(state) {
             state.token = null;
@@ -23,10 +24,10 @@ const authSlice = createSlice({
             state.isLoggedIn = false;
             localStorage.removeItem('token');
             localStorage.removeItem('userId');
+            localStorage.removeItem('theme')
         },
     },
 });
 
 export const authActions = authSlice.actions;
-
 export default authSlice.reducer;

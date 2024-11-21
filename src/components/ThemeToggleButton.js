@@ -11,7 +11,7 @@ const ThemeToggleButton =()=>{
     const toggleHandler=()=>{
         dispatch(toggleTheme())
     }
-
+    
     return(
         <Button variant={darkMode? 'light':'dark'} onClick={toggleHandler}><BsToggle2Off/></Button>
     )

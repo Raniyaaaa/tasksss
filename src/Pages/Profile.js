@@ -52,7 +52,7 @@ const Profile = () => {
       alert('Profile updated successfully!');
       console.log('Profile updated successfully!')
 
-      navigate('/home');
+      navigate('/products');
     })
     .catch((error) => {
       alert('Failed to update profile: ' + error.message);

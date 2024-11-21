@@ -9,7 +9,7 @@ const EmailVerification = () => {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (!token) {
-            navigate('/auth');
+            navigate('/login');
         } else {
             checkEmailVerification(token);
         }
@@ -31,13 +31,13 @@ const EmailVerification = () => {
         .then((data) => {
             if (data && data.users && data.users[0].emailVerified) {
                 setIsVerified(true);
-                navigate('/home');
+                // navigate('/products');
             } else {
                 setIsVerified(false);
             }
         })
         .catch((err) => {
-            setError("Failed to check email verification status.");
+            setError("Failed to check email verification status.",err);
         });
     };
 
@@ -73,7 +73,7 @@ const EmailVerification = () => {
             {isVerified ? (
                 <div>
                     <h2>Your email is verified!</h2>
-                    <button onClick={() => navigate('/')}>Go to Home</button>
+                    <button onClick={() => navigate('/products')}>Go to Home</button>
                 </div>
             ) : (
                 <div>

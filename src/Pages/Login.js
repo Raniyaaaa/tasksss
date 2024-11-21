@@ -1,18 +1,14 @@
-// 
-
 import { useRef, useState } from "react";
-import { Button, FloatingLabel, Alert } from "react-bootstrap";
+import { Button, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import MainNavigation from "../MainNavigation/MainNavigation";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { authActions } from "../Store/AuthSlice";
 
 const Login = () => {
     const dispatch = useDispatch();
-    const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
     const [isLogin, setIsLogin] = useState(true);
-    const [error, setError] = useState(null);
 
     const emailInputRef = useRef();
     const passwordInputRef = useRef();
@@ -36,14 +32,8 @@ const Login = () => {
         const enteredPassword = passwordInputRef.current.value;
         const enteredConfirmPassword = confirmPasswordInputRef.current ? confirmPasswordInputRef.current.value : '';
 
-        // Validation checks
-        if (!/\S+@\S+\.\S+/.test(enteredEmail)) {
-            setError("Please enter a valid email.");
-            return;
-        }
-
         if (!isLogin && enteredPassword !== enteredConfirmPassword) {
-            setError("Passwords do not match!");
+            alert("Passwords do not match!");
             return;
         }
 
@@ -51,7 +41,7 @@ const Login = () => {
             ? 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyC465zamb1d08zID26EyUI0YPtMg_TO9qw'
             : "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyC465zamb1d08zID26EyUI0YPtMg_TO9qw";
 
-        // Perform the fetch call
+
         fetch(url, {
             method: 'POST',
             body: JSON.stringify({
@@ -63,27 +53,31 @@ const Login = () => {
                 'Content-Type': 'application/json'
             }
         })
-        .then((res) => res.ok ? res.json() : res.json().then((data) => {
-            let errorMessage = "Authentication failed!";
-            if (data && data.error && data.error.message) {
-                errorMessage = data.error.message;
+        .then((res) => {
+            if (!res.ok) {
+                return res.json().then((data) => {
+                    let errorMessage = "Authentication failed!";
+                    if (data && data.error && data.error.message) {
+                        errorMessage = data.error.message;
+                    }
+                    throw new Error(errorMessage);
+                });
             }
-            throw new Error(errorMessage);
-        }))
+            return res.json();
+        })
         .then((data) => {
             console.log(data);
             dispatch(authActions.login({
                 token: data.idToken,
                 userId: enteredEmail
             }));
-            setError(null);
-            navigate('/verifyEmail');
+            navigate('/home');
         })
         .catch((err) => {
-            setError(err.message);
+            alert(err.message);
         });
-    };
-
+    }
+    
     const toggleAuthModeHandler = () => {
         setIsLogin((prevState) => !prevState);
     };
@@ -101,11 +95,6 @@ const Login = () => {
                     textAlign: 'center'
                 }}>
                     <h1>{isLogin ? 'Login' : 'SignUp'}</h1>
-                    {error && (
-                        <Alert variant="danger" onClose={() => setError(null)} dismissible>
-                            {error}
-                        </Alert>
-                    )}
                     <form onSubmit={submitHandler}>
                         <div className="mt-4">
                             <div className="form-floating">
